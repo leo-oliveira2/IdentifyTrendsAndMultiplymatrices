@@ -33,26 +33,43 @@ public class App {
         // Caso de retorno negativo
         // Carga de dados: 
         String[] negativeS = new String[10];
-        negativeS[0] = "buy Amazon";
-        negativeS[1] = "buy Amazon";
-        negativeS[2] = "buy Amazon";
-        negativeS[3] = "buy Amazon";
-        negativeS[4] = "buy Amazon";
-        negativeS[5] = "buy Amazon";
-        negativeS[6] = "buy Amazon";
-        negativeS[7] = "buy Amazon";
-        negativeS[8] = "buy Amazon";
-        negativeS[9] = "buy Amazon";
+        for (int i = 0; i < negativeS.length ; i++) {
+            negativeS[i] = "buy Amazon";
+        }
 
-        String[] negativeS_line = new String[4];
-        negativeS_line[0] = "buy Google";
-        negativeS_line[1] = "buy Apple";
-        negativeS_line[2] = "buy Google";
-        negativeS_line[3] = "buy NVIDIA";
         // Resultado:
-        System.out.println(hasTrend(negativeS, negativeS_line));
+        System.out.println(hasTrend(negativeS, S_line));
 
-        //Problema 2 : Algoritmo de Strassen’s (division and conquer)
+        //Problema 2 : Multiplicação de matrizes utilizando divisão e conquista
+
+        // Algoritmo comum de multiplicação de matrizes O(n^3)
+        int[][] A = new int[2][2];
+
+        for(int i = 0; i < A.length; i++){
+            for(int j = 0; j < A[i].length; j++){
+                A[i][j] = 2;
+            }
+        }
+
+        int[][] B = new int[2][2];
+
+        for(int i = 0; i < B.length; i++){
+            for(int j = 0; j < B[i].length; j++){
+                B[i][j] = 1;
+            }
+        }
+
+        int[][] resultado = new int[A[0].length][B[0].length];
+        multiply(A,B, resultado);
+
+        for (int i = 0; i < resultado.length; i++) {
+            for (int j = 0; j < resultado[i].length; j++) {
+                System.out.printf("%d \n", resultado[i][j]);
+            }
+        }
+
+        //Algoritmo de Strassen’s (division and conquer)
+
 
     }
 
