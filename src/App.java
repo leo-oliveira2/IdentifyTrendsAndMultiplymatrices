@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class App {
     public static void main(String[] args) throws Exception {
         /*
@@ -69,14 +72,37 @@ public class App {
         }
 
         //Algoritmo de Strassen’s (division and conquer)
-
-
     }
 
     public static boolean hasTrend(String[] S, String[] S_line){
-        for (int i = 0; i < S.length; i++){
-            S[i] = "0";
+
+        ArrayList<String> newS = new ArrayList<>();
+        Collections.addAll(newS, S);
+        int countIguais = 0; 
+
+        for (int i = 0; i < S_line.length; i++){
+            for (int j = 0; j < S_line.length; j++) {
+                if(S[i].equals(S_line[j])){
+                    countIguais++;
+                }    
+            }            
+        }
+
+        if((countIguais == S_line.length)){
             return true;
+        }else{
+            for (int i = 0; i < newS.size(); i++) {
+                for (int j = i+1; j < newS.size(); j++) {
+                    if(newS.get(i).equals(newS.get(j))){
+                        newS.remove(j);
+                        System.out.println(newS.get(j));
+                        newS.toArray(S);
+                        hasTrend(S, S_line);
+                    }else{
+                        break;
+                    }                
+                }
+            }
         }
         return false;
     }
