@@ -79,6 +79,7 @@ public class App {
         ArrayList<String> newS = new ArrayList<>();
         Collections.addAll(newS, S);
         int countIguais = 0; 
+        boolean achouIgual = false;
 
         for (int i = 0; i < S_line.length; i++){
             for (int j = 0; j < S_line.length; j++) {
@@ -91,16 +92,31 @@ public class App {
         if((countIguais == S_line.length)){
             return true;
         }else{
-            for (int i = 0; i < newS.size(); i++) {
-                for (int j = i+1; j < newS.size(); j++) {
-                    if(newS.get(i).equals(newS.get(j))){
-                        newS.remove(j);
-                        System.out.println(newS.get(j));
-                        newS.toArray(S);
-                        hasTrend(S, S_line);
+            if(S.length > S_line.length){
+                for (int i = 0; i < newS.size(); i++){
+                    if(!(newS.get(i).equals(newS.get(i+1)))){
+                        for (int j = i+1; j < newS.size()-1; j++) {
+                            if(newS.get(i).equals(newS.get(j))){
+                                newS.remove(j);
+                                achouIgual = true;
+                            } 
+                        }
+                        if(achouIgual){
+                            newS.toArray(S);
+                            for (int j = 0; j < S_line.length; j++) {
+                                System.out.println(S[j]);
+                            }
+                            hasTrend(S, S_line);
+                        }
                     }else{
-                        break;
-                    }                
+                        newS.remove(i);
+                        newS.toArray(S);
+                        System.out.println();
+                        for (int j = 0; j < S_line.length; j++) {
+                            System.out.println(" " + S[j]);
+                        }
+                        hasTrend(S, S_line);
+                    }
                 }
             }
         }
