@@ -31,7 +31,7 @@ public class App {
         S_line[3] = "buy NVIDIA";
 
         // Resultado:
-        System.out.println(hasTrend(S, S_line));
+        // System.out.println(hasTrend(S, S_line));
 
         // Caso de retorno negativo
         // Carga de dados: 
@@ -41,7 +41,38 @@ public class App {
         }
 
         // Resultado:
-        System.out.println(hasTrend(negativeS, S_line));
+        // System.out.println(hasTrend(negativeS, S_line));
+
+        // Teste temporal: 
+
+        // Conjunto de Dados Pequeno
+        // String[] subsequenciaPequena = {"Google", "Amazon", "Google"};
+        // String[] serieTemporalPequena = {"Google", "Amazon", "Amazon", "Amazon", "Amazon", "Google", "Google", "Google"};
+        // hasTrend(serieTemporalPequena, subsequenciaPequena);
+
+        // Conjunto de Dados Médio
+        // String[] subsequenciaMedio = {"Google", "Amazon", "Google"};
+        // String[] serieTemporalMedio = {"Google", "Apple", "Apple", "Apple", "Apple", "Google", "Google", "Google", "NVIDIA", "NVIDIA", "NVIDIA", "Microsoft", "Microsoft", "Microsoft", "Microsoft", "Facebook", "Facebook", "Facebook", "Amazon", "Amazon", "Amazon", "Amazon", "Tesla", "Tesla", "Tesla", "Tesla", "Sony", "Sony", "Sony", "Sony", "Google", "Amazon", "Google", "Google", "Apple", "Apple", "Apple", "Apple", "Google", "Google", "Google", "NVIDIA", "NVIDIA", "NVIDIA", "Microsoft", "Microsoft", "Microsoft", "Microsoft", "Facebook", "Facebook", "Facebook", "Amazon", "Amazon", "Amazon", "Amazon", "Tesla", "Tesla", "Tesla", "Tesla", "Sony", "Sony", "Sony", "Sony", "Google", "Amazon", "Google", "Google", "Apple", "Apple", "Apple", "Apple", "Google", "Google", "Google", "NVIDIA", "NVIDIA", "NVIDIA", "Microsoft", "Microsoft", "Microsoft", "Microsoft", "Facebook", "Facebook", "Facebook", "Amazon", "Amazon", "Amazon", "Amazon", "Tesla", "Tesla", "Tesla", "Tesla", "Sony", "Sony", "Sony", "Sony"};
+        // hasTrend(serieTemporalMedio, subsequenciaMedio);
+
+        // Conjunto de Dados Grande
+        String[] subsequenciaGrande = {"Google", "Amazon", "Google"};
+        String[] serieTemporalGrande = new String[10000];
+
+        // Preencher a série temporal grande com padrões repetidos
+        for (int i = 0; i < 10000; i++) {
+            if (i % 4 == 0) {
+                serieTemporalGrande[i] = "Google";
+            } else if (i % 4 == 1 || i % 4 == 2) {
+                serieTemporalGrande[i] = "Apple";
+            } else {
+                serieTemporalGrande[i] = "Amazon";
+            }
+        }
+
+
+        hasTrend(serieTemporalGrande, subsequenciaGrande);
+
 
         //Problema 2 : Multiplicação de matrizes utilizando divisão e conquista
 
@@ -65,62 +96,56 @@ public class App {
         int[][] resultado = new int[A[0].length][B[0].length];
         multiply(A,B, resultado);
 
-        for (int i = 0; i < resultado.length; i++) {
-            for (int j = 0; j < resultado[i].length; j++) {
-                System.out.printf("%d \n", resultado[i][j]);
-            }
-        }
+        // for (int i = 0; i < resultado.length; i++) {
+        //     for (int j = 0; j < resultado[i].length; j++) {
+        //         System.out.printf("%d \n", resultado[i][j]);
+        //     }
+        // }
 
         //Algoritmo de Strassen’s (division and conquer)
     }
 
-    public static boolean hasTrend(String[] S, String[] S_line){
-
+    public static boolean hasTrend(String[] S, String[] S_line) {
+        // Medindo o tempo do ínicio do algoritmo
+        long start = System.currentTimeMillis();
         ArrayList<String> newS = new ArrayList<>();
+        ArrayList<String> newS_line = new ArrayList<>();
         Collections.addAll(newS, S);
-        int countIguais = 0; 
-        boolean achouIgual = false;
+        Collections.addAll(newS_line, S_line);
+        int indexS = 0; // Índice para percorrer a lista original S
 
-        for (int i = 0; i < S_line.length; i++){
-            for (int j = 0; j < S_line.length; j++) {
-                if(S[i].equals(S_line[j])){
-                    countIguais++;
-                }    
-            }            
-        }
+        // Percorre a lista de subsequência reduzida
+        for (String s : newS_line) {
+            boolean found = false; // Flag para indicar se a string da subsequência foi encontrada
 
-        if((countIguais == S_line.length)){
-            return true;
-        }else{
-            if(S.length > S_line.length){
-                for (int i = 0; i < newS.size(); i++){
-                    if(!(newS.get(i).equals(newS.get(i+1)))){
-                        for (int j = i+1; j < newS.size()-1; j++) {
-                            if(newS.get(i).equals(newS.get(j))){
-                                newS.remove(j);
-                                achouIgual = true;
-                            } 
-                        }
-                        if(achouIgual){
-                            newS.toArray(S);
-                            for (int j = 0; j < S_line.length; j++) {
-                                System.out.println(S[j]);
-                            }
-                            hasTrend(S, S_line);
-                        }
-                    }else{
-                        newS.remove(i);
-                        newS.toArray(S);
-                        System.out.println();
-                        for (int j = 0; j < S_line.length; j++) {
-                            System.out.println(" " + S[j]);
-                        }
-                        hasTrend(S, S_line);
-                    }
+            // Percorre a lista original S a partir do índice atual
+            for (int i = indexS; i < newS.size(); i++) {
+                if (newS.get(i).equals(s)) { // Se encontrar a string na lista original
+                    found = true;
+                    indexS = i + 1; // Atualiza o índice para começar a próxima busca após esta posição
+                    break;
                 }
             }
+
+            // Se a string da subsequência não foi encontrada na lista original, retorna falso
+            if (!found) {
+                long elapsed = System.currentTimeMillis() - start;
+
+                System.out.printf("%.3f ms%n", (elapsed - start) / 1000d);
+        
+                return false;
+                
+            }
         }
-        return false;
+
+        
+        //Medindo o tempo final
+        long elapsed = System.currentTimeMillis() - start;
+        System.out.printf("Executado em %.3f ms%n", (elapsed - start) / 1000d);
+        System.out.println(elapsed);
+        // Se percorreu toda a lista de subsequência reduzida e encontrou todas as strings na lista original
+        // então retorna verdadeiro
+        return true;
     }
 
     public int[][] multiply(int[][] A, int[][] B){ // Algoritmo de Strassen’s, divisão e conquista
